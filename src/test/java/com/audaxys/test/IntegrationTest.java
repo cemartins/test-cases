@@ -14,6 +14,10 @@ import com.audaxys.test.dom.MusicCollection;
 import com.audaxys.test.dom.Person;
 import com.audaxys.test.util.DbUtil;
 
+/**
+ * Demonstrates a situation where hibernate throws an exception
+ * @author Carlos Martins
+ */
 public class IntegrationTest {
 	
 	private SessionFactory sessionFactory;
@@ -28,15 +32,8 @@ public class IntegrationTest {
 		configuration.addAnnotatedClass( MusicCollection.class );
 		configuration.addAnnotatedClass( AudioCd.class );
 		
-		// configuration for hibernate 3
-//		configuration.addClass(Person.class);
-//		configuration.addClass(MusicCollection.class);
-//		configuration.addClass(AudioCd.class);
-		
 		sessionFactory = configuration.buildSessionFactory( new StandardServiceRegistryBuilder().build() );
 
-//		sessionFactory = configuration.buildSessionFactory();
-		
 		DbUtil.initializeDb(sessionFactory);
 	}
 	
@@ -51,12 +48,17 @@ public class IntegrationTest {
 		// get the existing music collection
 		MusicCollection mc = DbUtil.getMusicCollection(session1, "X Collection");
 		
+		// create and save a copy of this collection (will break)
 		replicateMusicCollection(mc);
 		
 		transaction1.commit();
 		session1.close();
 	}
 	
+	/**
+	 * save a copy of the MusicCollection in a new transaction
+	 * @param mc
+	 */
 	private void replicateMusicCollection(MusicCollection mc) {
 
 		// open nested session
