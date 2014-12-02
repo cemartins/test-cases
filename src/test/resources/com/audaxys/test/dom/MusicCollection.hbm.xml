@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping>
+	<class name="com.audaxys.test.dom.MusicCollection" table="COLLECTION" lazy="true">
+		<id name="id" type="integer"> 
+			<generator class="native"/> 
+		</id> 
+	
+		<property name="name" type="string" />
+
+		<many-to-one name="owner" class="com.audaxys.test.dom.Person" lazy="proxy">
+            <column name="owner_id" />
+        </many-to-one>
+		
+        <set name="cdSet" inverse="true" cascade="all-delete-orphan" lazy="true">
+            <key>
+                <column name="collection_id" not-null="true" />
+            </key>
+            <one-to-many class="com.audaxys.test.dom.AudioCd" />
+        </set>
+		
+	</class>
+</hibernate-mapping>
