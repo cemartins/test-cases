@@ -14,7 +14,7 @@ import com.audaxys.test.dom.MusicCollection;
 import com.audaxys.test.dom.Person;
 import com.audaxys.test.util.DbUtil;
 
-public class TestCase {
+public class IntegrationTest {
 	
 	private SessionFactory sessionFactory;
 
