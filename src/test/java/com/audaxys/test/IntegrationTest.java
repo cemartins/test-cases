@@ -15,7 +15,8 @@ import com.audaxys.test.dom.Person;
 import com.audaxys.test.util.DbUtil;
 
 /**
- * Demonstrates a situation where hibernate throws an exception
+ * Demonstrates a problem while using nested transactions.<br>
+ * Hibernate throws an exception "illegally attempted to associate a proxy with two open Sessions"
  * @author Carlos Martins
  */
 public class IntegrationTest {
@@ -48,7 +49,7 @@ public class IntegrationTest {
 		// get the existing music collection
 		MusicCollection mc = DbUtil.getMusicCollection(session1, "X Collection");
 		
-		// create and save a copy of this collection (will break)
+		// create and save a copy of this collection in a nested transaction (will break)
 		replicateMusicCollection(mc);
 		
 		transaction1.commit();
@@ -56,7 +57,8 @@ public class IntegrationTest {
 	}
 	
 	/**
-	 * save a copy of the MusicCollection in a new transaction
+	 * Save a copy of the MusicCollection in a new transaction
+	 * for isolation purposes
 	 * @param mc
 	 */
 	private void replicateMusicCollection(MusicCollection mc) {
